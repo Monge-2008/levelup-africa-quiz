@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Level Up Africa — Quiz</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Overlay drawer -->
+    <div class="drawer-overlay" id="drawerOverlay" onclick="closeDrawer()"></div>
+
+    <!-- Drawer coulissant gauche -->
+    <aside class="drawer" id="drawer">
+        <div class="drawer-header">
+            <h2>⚙️ Paramètres</h2>
+            <button class="drawer-close" onclick="closeDrawer()">✕</button>
+        </div>
+
+        <div class="drawer-content">
+            <!-- Langue -->
+            <div class="drawer-section">
+                <h3>🌐 Langue</h3>
+                <div class="drawer-options" id="langOptions">
+                    <button class="drawer-btn active" data-lang="fr" onclick="setLang('fr')">🇫🇷 Français</button>
+                    <button class="drawer-btn" data-lang="en" onclick="setLang('en')">🇬🇧 English</button>
+                    <button class="drawer-btn" data-lang="es" onclick="setLang('es')">🇪🇸 Español</button>
+                    <button class="drawer-btn" data-lang="de" onclick="setLang('de')">🇩🇪 Deutsch</button>
+                </div>
+            </div>
+
+            <!-- Son -->
+            <div class="drawer-section">
+                <h3>🔊 Son</h3>
+                <div class="drawer-options">
+                    <button class="drawer-btn active" id="soundOn" onclick="setSound(true)">🔔 Activé</button>
+                    <button class="drawer-btn" id="soundOff" onclick="setSound(false)">🔕 Désactivé</button>
+                </div>
+            </div>
+
+            <!-- Thème -->
+            <div class="drawer-section">
+                <h3>🎨 Thème</h3>
+                <div class="drawer-options">
+                    <button class="drawer-btn active" id="themeDark" onclick="setTheme('dark')">🌙 Sombre</button>
+                    <button class="drawer-btn" id="themeLight" onclick="setTheme('light')">☀️ Clair</button>
+                </div>
+            </div>
+
+            <hr class="drawer-divider">
+
+            <!-- Aide -->
+            <div class="drawer-section">
+                <h3>❓ Aide</h3>
+                <div class="help-text">
+                    <p><strong>📖 Comment jouer</strong></p>
+                    <ol>
+                        <li>Choisis ton mode : Thèmes Officiels ou Personnalisé</li>
+                        <li>Configure ton quiz : nombre de questions, temps, langue</li>
+                        <li>Réponds aux questions avant la fin du chrono !</li>
+                        <li>Découvre ton score et deviens un "Future Elon Musk"</li>
+                    </ol>
+                    <p class="help-tip">💡 Astuce : Plus tu réponds vite, plus tu accumules de points !</p>
+                </div>
+            </div>
+
+            <!-- Contact -->
+            <div class="drawer-section">
+                <h3>📞 Contact</h3>
+                <p class="contact-info">
+                    <strong>Encadrant :</strong> Duvalier (Drakenarl)<br>
+                    <strong>Projet :</strong> Level Up Africa — Vacances L1
+                </p>
+            </div>
+
+            <!-- Crédits -->
+            <div class="drawer-section">
+                <h3>ℹ️ Crédits</h3>
+                <p class="credits-info">
+                    © 2026 Level Up Africa<br>
+                    Projet de vacances L1<br>
+                    Questions locales — 100% offline
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Header avec hamburger -->
+    <header class="main-header">
+        <button class="hamburger" onclick="openDrawer()" aria-label="Ouvrir le menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <div class="header-logo">
+            <span class="logo-icon">🚀</span>
+            <span class="logo-text">Level Up Africa</span>
+        </div>
+        <div class="header-spacer"></div>
+    </header>
+
+    <main class="home-container">
+        <div class="hero-section">
+            <h1 class="main-title">🚀 Level Up Africa</h1>
+            <p class="tagline">Teste tes connaissances et deviens un <span class="highlight">"Future Elon Musk"</span> !</p>
+            <p class="subtitle">Quiz interactif sur l'innovation, la tech et la culture africaine</p>
+        </div>
+
+        <!-- Sélecteur de mode -->
+        <div class="mode-selector">
+            <h2 class="section-title">Choisis ton mode</h2>
+            <div class="mode-cards">
+                <div class="mode-card" onclick="selectMode('classic')">
+                    <div class="mode-icon">📚</div>
+                    <h3>Thèmes Officiels</h3>
+                    <p>3 thèmes prédéfinis : Africa, Naija/Benin, Dev</p>
+                    <span class="mode-badge">Recommandé</span>
+                </div>
+                <div class="mode-card" onclick="selectMode('custom')">
+                    <div class="mode-icon">✨</div>
+                    <h3>Mode Personnalisé</h3>
+                    <p>Choisis ton propre sujet et configure tout</p>
+                    <span class="mode-badge mode-badge-new">Nouveau</span>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
