@@ -1,132 +1,423 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" data-theme="dark">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Level Up Africa — Quiz</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Level Up Africa — Quiz</title>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0f0f1a;--bg-card:#1a1a2e;--bg-hover:#252540;--text:#e0e0ff;--text-muted:#8888aa;--accent:#00d4aa;--accent-light:#00f0c8;--danger:#ff4757;--warning:#ffa502;--success:#2ed573;--border:#2a2a4a;--shadow:0 4px 20px rgba(0,0,0,0.4)}
+[data-theme="light"]{--bg:#f0f2f5;--bg-card:#fff;--bg-hover:#e8eaf0;--text:#1a1a2e;--text-muted:#666688;--accent:#00b894;--accent-light:#00d4aa;--danger:#e74c3c;--warning:#f39c12;--success:#27ae60;--border:#ddddee;--shadow:0 4px 20px rgba(0,0,0,0.1)}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6;overflow-x:hidden}
+.app-header{display:flex;align-items:center;justify-content:space-between;padding:1rem 1.5rem;background:var(--bg-card);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;box-shadow:var(--shadow)}
+.hamburger{background:none;border:none;font-size:1.5rem;cursor:pointer;color:var(--text);padding:0.5rem;border-radius:8px;transition:background .2s}.hamburger:hover{background:var(--bg-hover)}
+.app-title{font-size:1.1rem;font-weight:700;color:var(--accent)}
+.header-spacer{width:40px}
+.drawer-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.6);opacity:0;visibility:hidden;transition:all .3s;z-index:200}.drawer-overlay.active{opacity:1;visibility:visible}
+.drawer{position:fixed;top:0;right:0;width:min(360px,85vw);height:100vh;background:var(--bg-card);border-left:1px solid var(--border);transform:translateX(100%);transition:transform .3s;z-index:201;overflow-y:auto;padding-bottom:2rem}.drawer.active{transform:translateX(0)}
+.drawer-header{display:flex;align-items:center;justify-content:space-between;padding:1.2rem 1.5rem;border-bottom:1px solid var(--border)}.drawer-header h2{font-size:1.1rem}
+.close-btn{background:none;border:none;font-size:1.3rem;cursor:pointer;color:var(--text-muted);padding:0.3rem}.close-btn:hover{color:var(--danger)}
+.drawer-section{padding:1.2rem 1.5rem;border-bottom:1px solid var(--border)}.drawer-section h3{font-size:.9rem;color:var(--text-muted);margin-bottom:.8rem;text-transform:uppercase;letter-spacing:1px}
+.config-options{display:flex;flex-wrap:wrap;gap:.5rem}
+.drawer-btn{padding:.5rem 1rem;border:1px solid var(--border);border-radius:8px;background:var(--bg);color:var(--text);cursor:pointer;font-size:.85rem;transition:all .2s}.drawer-btn:hover{background:var(--bg-hover);border-color:var(--accent)}.drawer-btn.active{background:var(--accent);color:#0f0f1a;border-color:var(--accent);font-weight:600}
+.help-text ol{padding-left:1.2rem;font-size:.9rem;color:var(--text-muted)}.help-text li{margin-bottom:.4rem}
+.help-tip{margin-top:.8rem;padding:.6rem;background:rgba(0,212,170,0.1);border-radius:8px;font-size:.85rem;color:var(--accent);border-left:3px solid var(--accent)}
+.contact-info,.credits-info{font-size:.9rem;color:var(--text-muted);line-height:1.8}
+.home-container{max-width:800px;margin:0 auto;padding:2rem 1.5rem}
+.hero{text-align:center;margin-bottom:2.5rem}.main-title{font-size:2.2rem;margin-bottom:.5rem}.tagline{font-size:1.1rem;color:var(--text-muted);margin-bottom:.3rem}.tagline .highlight{color:var(--accent);font-weight:700}.subtitle{font-size:.95rem;color:var(--text-muted)}
+.section-title{font-size:1.3rem;margin-bottom:1.5rem;text-align:center}
+.modes-grid{display:grid;grid-template-columns:1fr;gap:1rem}@media(min-width:600px){.modes-grid{grid-template-columns:1fr 1fr}}
+.mode-card{background:var(--bg-card);border:1px solid var(--border);border-radius:16px;padding:1.5rem;cursor:pointer;transition:all .3s;text-align:center}.mode-card:hover{transform:translateY(-4px);border-color:var(--accent);box-shadow:0 8px 30px rgba(0,212,170,0.15)}
+.mode-icon{font-size:2.5rem;margin-bottom:.8rem}.mode-card h3{font-size:1.1rem;margin-bottom:.4rem}.mode-card p{font-size:.85rem;color:var(--text-muted);margin-bottom:.8rem}
+.mode-badge{display:inline-block;padding:.3rem .8rem;border-radius:20px;font-size:.75rem;font-weight:600}.mode-card:first-child .mode-badge{background:var(--accent);color:#0f0f1a}.mode-card:last-child .mode-badge{background:var(--warning);color:#1a1a2e}
+.config-screen{max-width:600px;margin:0 auto;padding:2rem 1.5rem}
+.config-card{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:1.2rem;margin-bottom:1rem}.config-card h3{font-size:1rem;margin-bottom:.8rem}
+.config-input{width:100%;padding:.8rem 1rem;border:1px solid var(--border);border-radius:8px;background:var(--bg);color:var(--text);font-size:1rem;outline:none}.config-input:focus{border-color:var(--accent)}.config-input::placeholder{color:var(--text-muted)}
+.config-actions{display:flex;gap:1rem;margin-top:1.5rem}
+.btn-primary,.btn-secondary{flex:1;padding:.9rem;border:none;border-radius:10px;font-size:1rem;font-weight:600;cursor:pointer;transition:all .2s}.btn-primary{background:var(--accent);color:#0f0f1a}.btn-primary:hover{background:var(--accent-light);transform:translateY(-2px)}.btn-secondary{background:var(--bg-hover);color:var(--text);border:1px solid var(--border)}.btn-secondary:hover{background:var(--border)}
+.quiz-screen{display:none;flex-direction:column;min-height:100vh}
+.quiz-header{display:flex;align-items:center;justify-content:space-between;padding:.7rem 1rem;background:var(--bg-card);border-bottom:1px solid var(--border)}
+@media(min-width:600px){.quiz-header{padding:1rem 1.5rem}}
+.quiz-header-left{display:flex;align-items:center;gap:1rem}
+.back-btn{background:none;border:none;font-size:1.2rem;cursor:pointer;color:var(--text-muted);padding:.3rem}.back-btn:hover{color:var(--text)}
+#themeBadge{padding:.3rem .8rem;border-radius:20px;font-size:.75rem;background:rgba(0,212,170,0.15);color:var(--accent);font-weight:600}
+.quiz-stats{display:flex;align-items:center;gap:1.2rem}.stat-item{display:flex;align-items:center;gap:.3rem;font-size:.9rem;font-weight:600}
+#timer{color:var(--accent);font-size:1.1rem}#timer.urgent{color:var(--danger);animation:pulse .5s infinite}@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+.progress-bar-container{width:100%;height:4px;background:var(--bg-hover)}#progressBar{height:100%;background:var(--accent);width:0%;transition:width .3s}
+.quiz-content{flex:1;max-width:700px;margin:0 auto;padding:1rem .8rem;width:100%}
+@media(min-width:600px){.quiz-content{padding:2rem 1.5rem}}
+#questionCounter{font-size:.85rem;color:var(--text-muted);margin-bottom:1rem}
+#questionText{font-size:1.1rem;font-weight:600;margin-bottom:1.2rem;line-height:1.4}
+@media(min-width:600px){#questionText{font-size:1.3rem;margin-bottom:1.5rem;line-height:1.5}}
+.options-container{display:flex;flex-direction:column;gap:.8rem}
+.option-btn{display:flex;align-items:center;gap:.7rem;padding:.8rem .9rem;background:var(--bg-card);border:2px solid var(--border);border-radius:12px;color:var(--text);font-size:.9rem;cursor:pointer;text-align:left;transition:all .2s;width:100%}
+@media(min-width:600px){.option-btn{gap:1rem;padding:1rem 1.2rem;font-size:1rem}}.option-btn:hover:not(:disabled){border-color:var(--accent);background:var(--bg-hover)}.option-btn:disabled{cursor:default;opacity:.7}
+.option-btn.correct{border-color:var(--success);background:rgba(46,213,115,0.15)}.option-btn.wrong{border-color:var(--danger);background:rgba(255,71,87,0.15)}
+.option-letter{width:36px;height:36px;border-radius:50%;background:var(--bg-hover);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.9rem;flex-shrink:0}.option-btn.correct .option-letter{background:var(--success);color:#fff}.option-btn.wrong .option-letter{background:var(--danger);color:#fff}
+.feedback{margin-top:1.5rem;padding:1rem 1.2rem;border-radius:12px;font-weight:600;display:none;animation:slideUp .3s}.feedback.correct{background:rgba(46,213,115,0.15);color:var(--success);border:1px solid var(--success)}.feedback.wrong{background:rgba(255,71,87,0.15);color:var(--danger);border:1px solid var(--danger)}@keyframes slideUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.next-btn-container{margin-top:1.5rem;text-align:center}.next-btn{padding:.8rem 2rem;background:var(--accent);color:#0f0f1a;border:none;border-radius:10px;font-size:1rem;font-weight:600;cursor:pointer;transition:all .2s}.next-btn:hover{background:var(--accent-light);transform:translateY(-2px)}
+.loading-screen{display:none;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;text-align:center;padding:2rem}
+.spinner{width:50px;height:50px;border:4px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin 1s linear infinite;margin-bottom:1.5rem}@keyframes spin{to{transform:rotate(360deg)}}
+.loading-screen p{color:var(--text-muted);font-size:1.1rem}
+.results-screen{display:none;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;text-align:center;padding:1rem .8rem}
+@media(min-width:600px){.results-screen{padding:2rem 1.5rem}}
+.results-card{background:var(--bg-card);border:1px solid var(--border);border-radius:20px;padding:1.5rem;width:92%;max-width:500px;margin:0 auto;box-shadow:var(--shadow)}
+@media(min-width:600px){.results-card{padding:2.5rem;width:100%}}
+.results-emoji{font-size:3rem;margin-bottom:.5rem}
+@media(min-width:600px){.results-emoji{font-size:4rem;margin-bottom:1rem}}
+.results-title{font-size:1.2rem;margin-bottom:.3rem}
+@media(min-width:600px){.results-title{font-size:1.5rem;margin-bottom:.5rem}}
+.results-score{font-size:2.2rem;font-weight:800;color:var(--accent);margin:.8rem 0}.results-score span{font-size:1rem;color:var(--text-muted);font-weight:400}
+@media(min-width:600px){.results-score{font-size:3rem;margin:1rem 0}.results-score span{font-size:1.2rem}}
+.results-message{font-size:.95rem;color:var(--text-muted);margin-bottom:1rem;word-break:break-word}
+@media(min-width:600px){.results-message{font-size:1.1rem;margin-bottom:1.5rem}}
+.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.6rem;margin:1rem 0}
+@media(min-width:600px){.stats-grid{gap:1rem;margin:1.5rem 0}}
+.stat-box{background:var(--bg);padding:.7rem .5rem;border-radius:12px}.stat-box .stat-label{font-size:.7rem;color:var(--text-muted);margin-bottom:.2rem;white-space:nowrap}.stat-box .stat-value{font-size:1.1rem;font-weight:700}
+@media(min-width:600px){.stat-box{padding:1rem}.stat-box .stat-label{font-size:.8rem;margin-bottom:.3rem}.stat-box .stat-value{font-size:1.3rem}}
+.results-actions{display:flex;flex-direction:column;gap:.7rem;margin-top:1rem}
+@media(min-width:600px){.results-actions{flex-direction:row;gap:1rem;margin-top:1.5rem}}
+.results-actions button{width:100%}
+@media(min-width:600px){.results-actions button{width:auto;flex:1}}
+.hidden{display:none!important}
+</style>
 </head>
 <body>
-    <!-- Overlay drawer -->
-    <div class="drawer-overlay" id="drawerOverlay" onclick="closeDrawer()"></div>
 
-    <!-- Drawer coulissant gauche -->
-    <aside class="drawer" id="drawer">
-        <div class="drawer-header">
-            <h2>⚙️ Paramètres</h2>
-            <button class="drawer-close" onclick="closeDrawer()">✕</button>
-        </div>
+<!-- HOME -->
+<div id="screen-home">
+<header class="app-header">
+<button class="hamburger" onclick="toggleDrawer()">☰</button>
+<h1 class="app-title">🌍 Level Up Africa</h1>
+<div class="header-spacer"></div>
+</header>
+<div id="drawerOverlay" class="drawer-overlay" onclick="toggleDrawer()"></div>
+<aside id="drawer" class="drawer">
+<div class="drawer-header"><h2>⚙️ Paramètres</h2><button class="close-btn" onclick="toggleDrawer()">✕</button></div>
+<div class="drawer-section"><h3>🌐 Langue</h3><div class="config-options">
+<button class="drawer-btn" id="btn-lang-fr" onclick="changeLang('fr')">🇫🇷 FR</button>
+<button class="drawer-btn" id="btn-lang-en" onclick="changeLang('en')">🇬🇧 EN</button>
+</div></div>
+<div class="drawer-section"><h3>🎨 Thème</h3><div class="config-options">
+<button class="drawer-btn" id="btn-theme-dark" onclick="changeTheme('dark')">🌙 Sombre</button>
+<button class="drawer-btn" id="btn-theme-light" onclick="changeTheme('light')">☀️ Clair</button>
+</div></div>
+<div class="drawer-section"><h3>❓ Aide</h3><div class="help-text"><ol><li>Choisis ton mode</li><li>Configure ton quiz</li><li>Réponds avant la fin du chrono !</li></ol><p class="help-tip">💡 Plus tu réponds vite, plus tu gagnes de points !</p></div></div>
+<div class="drawer-section"><h3>📞 Contact</h3><div class="contact-info"><strong>Encadrant :</strong> Duvalier (Drakenarl)<br><strong>Projet :</strong> Level Up Africa — Vacances L1</div></div>
+<div class="drawer-section"><h3>ℹ️ Crédits</h3><div class="credits-info">© 2026 Level Up Africa<br>Projet de vacances L1<br>Questions locales — 100% offline</div></div>
+</aside>
+<main class="home-container">
+<div class="hero">
+<h1 class="main-title">🚀 Level Up Africa</h1>
+<p class="tagline">Teste tes connaissances et deviens un <span class="highlight">"Future Elon Musk"</span> !</p>
+<p class="subtitle">Quiz interactif sur l'innovation, la tech et la culture africaine</p>
+</div>
+<h2 class="section-title">Choisis ton mode</h2>
+<div class="modes-grid">
+<div class="mode-card" onclick="goToConfig('classic')">
+<div class="mode-icon">📚</div>
+<h3>Thèmes Officiels</h3>
+<p>Africa, Naija/Benin, Dev</p>
+<span class="mode-badge">Recommandé</span>
+</div>
+<div class="mode-card" onclick="goToConfig('custom')">
+<div class="mode-icon">✨</div>
+<h3>Mode Personnalisé</h3>
+<p>Choisis ton propre sujet</p>
+<span class="mode-badge">Nouveau</span>
+</div>
+</div>
+</main>
+</div>
 
-        <div class="drawer-content">
-            <!-- Langue -->
-            <div class="drawer-section">
-                <h3>🌐 Langue</h3>
-                <div class="drawer-options" id="langOptions">
-                    <button class="drawer-btn active" data-lang="fr" onclick="setLang('fr')">🇫🇷 Français</button>
-                    <button class="drawer-btn" data-lang="en" onclick="setLang('en')">🇬🇧 English</button>
-                    <button class="drawer-btn" data-lang="es" onclick="setLang('es')">🇪🇸 Español</button>
-                    <button class="drawer-btn" data-lang="de" onclick="setLang('de')">🇩🇪 Deutsch</button>
-                </div>
-            </div>
+<!-- CONFIG -->
+<div id="screen-config" class="hidden">
+<header class="app-header">
+<button class="back-btn" onclick="goToHome()">←</button>
+<h1 class="app-title">Configurer</h1>
+<div class="header-spacer"></div>
+</header>
+<main class="config-screen" id="configBox"></main>
+</div>
 
-            <!-- Son -->
-            <div class="drawer-section">
-                <h3>🔊 Son</h3>
-                <div class="drawer-options">
-                    <button class="drawer-btn active" id="soundOn" onclick="setSound(true)">🔔 Activé</button>
-                    <button class="drawer-btn" id="soundOff" onclick="setSound(false)">🔕 Désactivé</button>
-                </div>
-            </div>
+<!-- LOADING -->
+<div id="screen-loading" class="loading-screen hidden">
+<div class="spinner"></div>
+<p>Chargement...</p>
+</div>
 
-            <!-- Thème -->
-            <div class="drawer-section">
-                <h3>🎨 Thème</h3>
-                <div class="drawer-options">
-                    <button class="drawer-btn active" id="themeDark" onclick="setTheme('dark')">🌙 Sombre</button>
-                    <button class="drawer-btn" id="themeLight" onclick="setTheme('light')">☀️ Clair</button>
-                </div>
-            </div>
+<!-- QUIZ -->
+<div id="screen-quiz" class="quiz-screen hidden">
+<div class="quiz-header">
+<div class="quiz-header-left"><button class="back-btn" onclick="quitQuiz()">←</button><span id="quizThemeBadge">Africa</span></div>
+<div class="quiz-stats"><div class="stat-item">⏱️ <span id="quizTimer">20</span>s</div><div class="stat-item">⭐ <span id="quizScore">0</span></div></div>
+</div>
+<div class="progress-bar-container"><div id="quizProgress"></div></div>
+<main class="quiz-content">
+<div id="quizCounter">Question 1 / 10</div>
+<div id="quizQuestion">Question</div>
+<div class="options-container" id="quizOptions"></div>
+<div class="feedback" id="quizFeedback"><span id="quizFeedbackText"></span></div>
+<div class="next-btn-container hidden" id="quizNextBox"><button class="next-btn" id="quizNextBtn" onclick="nextQ()">Suivant →</button></div>
+</main>
+</div>
 
-            <hr class="drawer-divider">
+<!-- RESULTS -->
+<div id="screen-results" class="results-screen hidden">
+<div class="results-card">
+<div class="results-emoji" id="resEmoji">🏆</div>
+<h2 class="results-title">Quiz terminé !</h2>
+<div class="results-score"><span id="resScore">0</span><span>/</span><span id="resTotal">10</span></div>
+<p class="results-message" id="resMsg">Bravo !</p>
+<div class="stats-grid">
+<div class="stat-box"><div class="stat-label">✅ Correctes</div><div class="stat-value" id="resCorrect">0</div></div>
+<div class="stat-box"><div class="stat-label">❌ Incorrectes</div><div class="stat-value" id="resWrong">0</div></div>
+<div class="stat-box"><div class="stat-label">⏱️ Temps</div><div class="stat-value" id="resTime">0s</div></div>
+</div>
+<div class="results-actions">
+<button class="btn-secondary" onclick="goToHome()">🏠 Accueil</button>
+<button class="btn-primary" onclick="replay()">🔄 Rejouer</button>
+</div>
+</div>
+</div>
 
-            <!-- Aide -->
-            <div class="drawer-section">
-                <h3>❓ Aide</h3>
-                <div class="help-text">
-                    <p><strong>📖 Comment jouer</strong></p>
-                    <ol>
-                        <li>Choisis ton mode : Thèmes Officiels ou Personnalisé</li>
-                        <li>Configure ton quiz : nombre de questions, temps, langue</li>
-                        <li>Réponds aux questions avant la fin du chrono !</li>
-                        <li>Découvre ton score et deviens un "Future Elon Musk"</li>
-                    </ol>
-                    <p class="help-tip">💡 Astuce : Plus tu réponds vite, plus tu accumules de points !</p>
-                </div>
-            </div>
+<script>
+// ===================== QUESTIONS =====================
+const Q = {
+africa:[
+{q:"Quelle startup nigériane est devenue licorne en 2019 ?",o:["Paystack","Interswitch","Flutterwave","Kuda"],a:"Interswitch"},
+{q:"Quel pays africain a lancé M-Pesa ?",o:["Nigeria","Afrique du Sud","Kenya","Ghana"],a:"Kenya"},
+{q:"Quelle ville est surnommée 'Silicon Lagoon' ?",o:["Accra","Nairobi","Lagos","Le Cap"],a:"Lagos"},
+{q:"Quel pays abrite le siège de Flutterwave ?",o:["Ghana","Kenya","Nigeria","Afrique du Sud"],a:"Nigeria"},
+{q:"Quel secteur tech connaît la plus forte croissance en Afrique ?",o:["EdTech","HealthTech","Fintech","AgriTech"],a:"Fintech"},
+{q:"Quel incubateur tech panafricain est basé au Kenya ?",o:["MEST","iHub","CcHub","Flat6Labs"],a:"iHub"},
+{q:"Quel pays a lancé son propre satellite avec ingénieurs locaux en 2022 ?",o:["Nigeria","Égypte","Djibouti","Maroc"],a:"Djibouti"},
+{q:"Quelle plateforme e-commerce panafricaine est cotée à la Bourse de New York ?",o:["Konga","Jumia","Takealot","Kilimall"],a:"Jumia"},
+{q:"Quel pays africain compte le plus de startups tech ?",o:["Afrique du Sud","Kenya","Nigeria","Égypte"],a:"Nigeria"},
+{q:"Quel pays africain est leader mondial du mobile money ?",o:["Nigeria","Kenya","Ghana","Côte d'Ivoire"],a:"Kenya"}
+],
+naija:[
+{q:"Quelle est la capitale politique du Bénin ?",o:["Cotonou","Porto-Novo","Parakou","Abomey"],a:"Porto-Novo"},
+{q:"Quelle est la capitale économique du Bénin ?",o:["Porto-Novo","Cotonou","Ouidah","Lokossa"],a:"Cotonou"},
+{q:"Quel plat est emblématique de la cuisine béninoise ?",o:["Poulet DG","La pâte rouge","Thieboudienne","Foutou"],a:"La pâte rouge"},
+{q:"Quelle langue nationale est la plus parlée au Bénin ?",o:["Yoruba","Fon","Dendi","Bariba"],a:"Fon"},
+{q:"Quel pays voisin du Bénin partage la langue Yoruba ?",o:["Ghana","Togo","Nigeria","Burkina Faso"],a:"Nigeria"},
+{q:"Quel roi béninois est célèbre pour avoir résisté à la colonisation française ?",o:["Guézo","Béhanzin","Agaja","Tègbèssou"],a:"Béhanzin"},
+{q:"Quelle est la monnaie officielle du Bénin ?",o:["Naira","Cedi","Franc CFA (XOF)","Shilling"],a:"Franc CFA (XOF)"},
+{q:"Quel sport est le plus populaire au Bénin ?",o:["Basketball","Football","Handball","Athlétisme"],a:"Football"},
+{q:"Quelle artiste musicienne béninoise est mondialement connue ?",o:["Yemi Alade","Tiwa Savage","Angélique Kidjo","Asa"],a:"Angélique Kidjo"},
+{q:"Quelle est la capitale du Nigeria ?",o:["Lagos","Abuja","Kano","Ibadan"],a:"Abuja"}
+],
+dev:[
+{q:"Que signifie HTML ?",o:["HyperText Modern Language","HyperText Markup Language","HighText Markup Language","HyperTransfer Markup Language"],a:"HyperText Markup Language"},
+{q:"Quel langage sert principalement au style d'une page web ?",o:["JavaScript","Python","CSS","Java"],a:"CSS"},
+{q:"Quelle méthode JS ajoute un élément à la fin d'un tableau ?",o:["pop()","shift()","push()","unshift()"],a:"push()"},
+{q:"Quel mot-clé JS déclare une variable non réassignable ?",o:["var","let","const","static"],a:"const"},
+{q:"Que signifie API ?",o:["Application Programming Interface","Advanced Programming Interface","Application Process Integration","Automated Program Interface"],a:"Application Programming Interface"},
+{q:"Quel format de données léger est utilisé pour l'échange client/serveur ?",o:["XML","YAML","JSON","CSV"],a:"JSON"},
+{q:"Quelle balise HTML crée un lien hypertexte ?",o:["<link>","<a>","<href>","<url>"],a:"<a>"},
+{q:"Quelle commande Git envoie le code à un dépôt distant ?",o:["git pull","git commit","git push","git merge"],a:"git push"},
+{q:"Quel opérateur JS compare valeur ET type ?",o:["==","===","!=","!=="],a:"==="},
+{q:"Que signifie DOM ?",o:["Digital Object Model","Document Object Model","Data Object Management","Dynamic Output Module"],a:"Document Object Model"}
+]
+};
 
-            <!-- Contact -->
-            <div class="drawer-section">
-                <h3>📞 Contact</h3>
-                <p class="contact-info">
-                    <strong>Encadrant :</strong> Duvalier (Drakenarl)<br>
-                    <strong>Projet :</strong> Level Up Africa — Vacances L1
-                </p>
-            </div>
+// ===================== STATE =====================
+let lang='fr',theme='dark',mode='classic',selTheme='africa',amount=10,timeLimit=20;
+let questions=[],idx=0,score=0,timeLeft=20,timer=null,answers=[],startTime=0;
 
-            <!-- Crédits -->
-            <div class="drawer-section">
-                <h3>ℹ️ Crédits</h3>
-                <p class="credits-info">
-                    © 2026 Level Up Africa<br>
-                    Projet de vacances L1<br>
-                    Questions locales — 100% offline
-                </p>
-            </div>
-        </div>
-    </aside>
+// ===================== SCREENS =====================
+function show(id){
+['screen-home','screen-config','screen-loading','screen-quiz','screen-results'].forEach(s=>{
+document.getElementById(s).classList.add('hidden');
+document.getElementById(s).style.display='none';
+});
+const el=document.getElementById(id);
+el.classList.remove('hidden');
+if(id==='screen-quiz'||id==='screen-loading'||id==='screen-results')el.style.display='flex';
+else el.style.display='block';
+}
 
-    <!-- Header avec hamburger -->
-    <header class="main-header">
-        <button class="hamburger" onclick="openDrawer()" aria-label="Ouvrir le menu">
-            <span></span>
-            <span></span>
-            <span></span>
-        </button>
-        <div class="header-logo">
-            <span class="logo-icon">🚀</span>
-            <span class="logo-text">Level Up Africa</span>
-        </div>
-        <div class="header-spacer"></div>
-    </header>
+// ===================== DRAWER =====================
+function toggleDrawer(){
+document.getElementById('drawer').classList.toggle('active');
+document.getElementById('drawerOverlay').classList.toggle('active');
+}
 
-    <main class="home-container">
-        <div class="hero-section">
-            <h1 class="main-title">🚀 Level Up Africa</h1>
-            <p class="tagline">Teste tes connaissances et deviens un <span class="highlight">"Future Elon Musk"</span> !</p>
-            <p class="subtitle">Quiz interactif sur l'innovation, la tech et la culture africaine</p>
-        </div>
+// ===================== SETTINGS =====================
+function changeLang(l){
+lang=l;
+document.getElementById('btn-lang-fr').classList.toggle('active',l==='fr');
+document.getElementById('btn-lang-en').classList.toggle('active',l==='en');
+}
+function changeTheme(t){
+theme=t;
+document.documentElement.setAttribute('data-theme',t);
+document.getElementById('btn-theme-dark').classList.toggle('active',t==='dark');
+document.getElementById('btn-theme-light').classList.toggle('active',t==='light');
+}
 
-        <!-- Sélecteur de mode -->
-        <div class="mode-selector">
-            <h2 class="section-title">Choisis ton mode</h2>
-            <div class="mode-cards">
-                <div class="mode-card" onclick="selectMode('classic')">
-                    <div class="mode-icon">📚</div>
-                    <h3>Thèmes Officiels</h3>
-                    <p>3 thèmes prédéfinis : Africa, Naija/Benin, Dev</p>
-                    <span class="mode-badge">Recommandé</span>
-                </div>
-                <div class="mode-card" onclick="selectMode('custom')">
-                    <div class="mode-icon">✨</div>
-                    <h3>Mode Personnalisé</h3>
-                    <p>Choisis ton propre sujet et configure tout</p>
-                    <span class="mode-badge mode-badge-new">Nouveau</span>
-                </div>
-            </div>
-        </div>
-    </main>
+// ===================== NAVIGATION =====================
+function goToHome(){show('screen-home');}
+function goToConfig(m){
+mode=m;
+const box=document.getElementById('configBox');
+const isClassic=m==='classic';
+box.innerHTML=(isClassic?`
+<div class="config-card"><h3>📚 Choisis ton thème</h3><div class="config-options">
+<button class="drawer-btn" id="th-africa" onclick="pickTheme('africa')">🌍 Africa</button>
+<button class="drawer-btn" id="th-naija" onclick="pickTheme('naija')">🏛️ Naija/Benin</button>
+<button class="drawer-btn" id="th-dev" onclick="pickTheme('dev')">💻 Dev</button>
+</div></div>`:`
+<div class="config-card"><h3>✨ Sujet personnalisé</h3><input type="text" class="config-input" id="customSub" placeholder="Ex: histoire du Bénin..."></div>`)+`
+<div class="config-card"><h3>🔢 Nombre de questions</h3><div class="config-options">
+<button class="drawer-btn" id="am-5" onclick="pickAmount(5)">5</button>
+<button class="drawer-btn" id="am-10" onclick="pickAmount(10)">10</button>
+<button class="drawer-btn" id="am-15" onclick="pickAmount(15)">15</button>
+</div></div>
+<div class="config-card"><h3>⏱️ Temps par question</h3><div class="config-options">
+<button class="drawer-btn" id="tm-10" onclick="pickTime(10)">10s</button>
+<button class="drawer-btn" id="tm-15" onclick="pickTime(15)">15s</button>
+<button class="drawer-btn" id="tm-20" onclick="pickTime(20)">20s</button>
+<button class="drawer-btn" id="tm-30" onclick="pickTime(30)">30s</button>
+</div></div>
+<div class="config-actions">
+<button class="btn-secondary" onclick="goToHome()">← Retour</button>
+<button class="btn-primary" onclick="launchQuiz()">🚀 Lancer</button>
+</div>`;
+pickAmount(10);pickTime(20);if(isClassic)pickTheme('africa');
+show('screen-config');
+}
 
-    <script src="js/main.js"></script>
+function pickTheme(t){selTheme=t;['africa','naija','dev'].forEach(x=>document.getElementById('th-'+x).classList.toggle('active',x===t));}
+function pickAmount(n){amount=n;[5,10,15].forEach(x=>document.getElementById('am-'+x).classList.toggle('active',x===n));}
+function pickTime(n){timeLimit=n;[10,15,20,30].forEach(x=>document.getElementById('tm-'+x).classList.toggle('active',x===n));}
+
+// ===================== QUIZ LOGIC =====================
+function launchQuiz(){
+if(mode==='custom'&&!document.getElementById('customSub').value.trim()){alert('Entre un sujet !');return;}
+show('screen-loading');
+setTimeout(()=>{
+let src=Q[selTheme]||Q.africa;
+questions=src.map(q=>({...q,o:q.o.map(x=>({t:x,c:x===q.a}))})).sort(()=>Math.random()-.5).slice(0,amount);
+questions.forEach(q=>{q.o=q.o.sort(()=>Math.random()-.5);});
+idx=0;score=0;answers=[];startTime=Date.now();
+show('screen-quiz');
+document.getElementById('quizThemeBadge').textContent=selTheme.toUpperCase();
+renderQ();
+},300);
+}
+
+function renderQ(){
+const q=questions[idx];
+document.getElementById('quizCounter').textContent='Question '+(idx+1)+' / '+questions.length;
+document.getElementById('quizProgress').style.width=((idx)/questions.length*100)+'%';
+document.getElementById('quizQuestion').textContent=q.q;
+const box=document.getElementById('quizOptions');
+box.innerHTML='';
+const letters=['A','B','C','D'];
+q.o.forEach((opt,i)=>{
+const btn=document.createElement('button');
+btn.className='option-btn';
+btn.innerHTML='<span class="option-letter">'+letters[i]+'</span><span>'+opt.t+'</span>';
+btn.onclick=()=>answer(opt.c,opt.t);
+box.appendChild(btn);
+});
+document.getElementById('quizFeedback').style.display='none';
+document.getElementById('quizFeedback').className='feedback';
+document.getElementById('quizNextBox').classList.add('hidden');
+startTimer();
+updateScore();
+}
+
+function startTimer(){
+clearInterval(timer);
+timeLeft=timeLimit;
+updateTimer();
+timer=setInterval(()=>{
+timeLeft--;
+updateTimer();
+if(timeLeft<=0){clearInterval(timer);timeout();}
+},1000);
+}
+function updateTimer(){
+const el=document.getElementById('quizTimer');
+el.textContent=timeLeft;
+el.classList.toggle('urgent',timeLeft<=5);
+}
+
+function answer(isCorrect,text){
+clearInterval(timer);
+const q=questions[idx];
+const btns=document.querySelectorAll('.option-btn');
+btns.forEach(b=>{b.disabled=true;
+const t=b.querySelector('span:last-child').textContent;
+if(t===q.o.find(x=>x.c).t)b.classList.add('correct');
+else if(t===text&&!isCorrect)b.classList.add('wrong');
+});
+if(isCorrect)score++;
+answers.push({q:q.q,s:text,c:q.o.find(x=>x.c).t,ok:isCorrect});
+updateScore();
+showFeedback(isCorrect);
+document.getElementById('quizNextBox').classList.remove('hidden');
+document.getElementById('quizNextBtn').textContent=idx>=questions.length-1?'Terminer →':'Suivant →';
+}
+
+function timeout(){
+const q=questions[idx];
+const btns=document.querySelectorAll('.option-btn');
+btns.forEach(b=>{b.disabled=true;
+const t=b.querySelector('span:last-child').textContent;
+if(t===q.o.find(x=>x.c).t)b.classList.add('correct');
+});
+answers.push({q:q.q,s:null,c:q.o.find(x=>x.c).t,ok:false});
+showFeedback(false,true);
+document.getElementById('quizNextBox').classList.remove('hidden');
+document.getElementById('quizNextBtn').textContent=idx>=questions.length-1?'Terminer →':'Suivant →';
+}
+
+function showFeedback(ok,timeout=false){
+const fb=document.getElementById('quizFeedback');
+const txt=document.getElementById('quizFeedbackText');
+fb.style.display='block';
+fb.className='feedback '+(ok?'correct':'wrong');
+if(timeout)txt.textContent='⏰ Temps écoulé ! Réponse : '+questions[idx].o.find(x=>x.c).t;
+else if(ok)txt.textContent=['🎉 Correct !','✅ Bravo !','🌟 Bien joué !'][Math.floor(Math.random()*3)];
+else txt.textContent='❌ Incorrect ! Réponse : '+questions[idx].o.find(x=>x.c).t;
+}
+
+function nextQ(){
+idx++;
+if(idx>=questions.length)showResults();
+else renderQ();
+}
+
+function updateScore(){document.getElementById('quizScore').textContent=score;}
+
+function showResults(){
+clearInterval(timer);
+const totalTime=Math.floor((Date.now()-startTime)/1000);
+const pct=Math.round(score/questions.length*100);
+const correct=answers.filter(a=>a.ok).length;
+show('screen-results');
+document.getElementById('resScore').textContent=score;
+document.getElementById('resTotal').textContent=questions.length;
+document.getElementById('resCorrect').textContent=correct;
+document.getElementById('resWrong').textContent=answers.length-correct;
+document.getElementById('resTime').textContent=totalTime+'s';
+const msgs=pct>=80?['🏆 Future Elon Musk !','🌟 Légendaire !']:pct>=60?['🌟 Très bien !','👏 Excellent !']:pct>=40?['💪 Pas mal !','👍 Continue !']:['📚 Encore un effort !','💡 Réessaie !'];
+document.getElementById('resMsg').textContent=msgs[Math.floor(Math.random()*msgs.length)]+' ('+pct+'%)';
+document.getElementById('resEmoji').textContent=pct>=80?'🏆':pct>=60?'🌟':pct>=40?'💪':'📚';
+}
+
+function replay(){launchQuiz();}
+function quitQuiz(){if(confirm('Quitter le quiz ?')){clearInterval(timer);goToHome();}}
+
+// ===================== INIT =====================
+document.addEventListener('DOMContentLoaded',()=>{
+changeTheme('dark');
+changeLang('fr');
+});
+</script>
 </body>
 </html>
